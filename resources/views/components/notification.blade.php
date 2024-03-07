@@ -21,8 +21,9 @@
             init() {
                 Echo.private('notifications.{{ $user->id }}')
                     .listen('UserNotificationEvent', (e) => {
-                        // Todo: Handle Event Data
-                        console.log('private', e);
+                        if (e.notification !== undefined) {
+                            this.notifications.push(e.notification);
+                        }
                     });
             },
         }));
