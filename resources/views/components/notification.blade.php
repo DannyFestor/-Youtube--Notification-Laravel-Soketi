@@ -1,7 +1,7 @@
-@props(['user'])
+@props(['user', 'notifications'])
 
 <div x-data="notification">
-    <div class="relative w-6 h-6">
+    <div @click="markRead" class="relative w-6 h-6">
         <x-bell />
         <x-count />
     </div>
@@ -12,10 +12,18 @@
 <script>
     document.addEventListener('alpine:init', () => {
         Alpine.data('notification', () => ({
-            notifications: [],
+            notifications: @json($notifications),
 
             get count() {
                 return this.notifications.length;
+            },
+
+            async markRead() {
+                const { data } = await axios.post('{{ route('notifications') }}');
+
+                if (data !== undefined && data === 'ok') {
+                    this.notifications = [];
+                }
             },
 
             init() {
