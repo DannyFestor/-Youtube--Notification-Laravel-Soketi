@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Events\UserNotificationEvent;
 use App\Models\Notification;
 use App\Models\NotificationUser;
 use App\Models\User;
@@ -35,6 +36,10 @@ class MakeNotificationCommand extends Command
                     ];
                 }, $chunk);
                 NotificationUser::insert($insert);
+
+                foreach($chunk as $userId) {
+                    UserNotificationEvent::dispatch($userId, $notification);
+                }
             }
         });
     }

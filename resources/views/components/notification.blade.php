@@ -16,7 +16,15 @@
 
             get count() {
                 return this.notifications.length;
-            }
+            },
+
+            init() {
+                Echo.private('notifications.{{ $user->id }}')
+                    .listen('UserNotificationEvent', (e) => {
+                        // Todo: Handle Event Data
+                        console.log('private', e);
+                    });
+            },
         }));
     });
 </script>
