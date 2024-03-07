@@ -22,10 +22,12 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     $user = Auth::user();
     $notifications = $user->notifications()->whereNull('seen_at')->get();
+    $eventName = (new \ReflectionClass(\App\Events\UserNotificationEvent::class))->getShortName();
 
     return view('dashboard', [
         'user' => $user,
         'notifications' => $notifications,
+        'eventName' => $eventName,
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 

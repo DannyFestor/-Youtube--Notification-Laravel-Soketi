@@ -1,4 +1,4 @@
-@props(['user', 'notifications'])
+@props(['user', 'notifications', 'eventName'])
 
 <div x-data="notification">
     <div @click="markRead" class="relative w-6 h-6">
@@ -28,7 +28,7 @@
 
             init() {
                 Echo.private('notifications.{{ $user->id }}')
-                    .listen('UserNotificationEvent', (e) => {
+                    .listen('{{ $eventName }}', (e) => {
                         if (e.notification !== undefined) {
                             this.notifications.push(e.notification);
                         }
